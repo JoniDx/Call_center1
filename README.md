@@ -1,2 +1,2 @@
 # Call_center1
-desarrollado en php ver. 5
+desarrollado en appserver, php ver. 5 y javascrip
