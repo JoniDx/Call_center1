@@ -1,0 +1,37 @@
+function enviarDatos(){
+	var user, pass, tipoGuardar;
+	      user = document.getElementById('user').value;
+	      pass = document.getElementById('pass').value;
+				// user1 = document.getElementById('user1').value;
+
+				tipoGuardar = "Login";
+	      if(user != '' && pass != ''){
+
+				var datos = 'user=' + user + '&pass=' + pass + '&TipoGuardar=' + tipoGuardar;
+
+					$.ajax({
+						type:"POST",
+						url:"view/ajax/insertar.php",
+						data:datos,
+						success:function(data){
+							// alert(data);
+						}
+					})
+					.done(function(data) {
+				if(data != 0){
+					if(data = 1){
+						parent.location.href='?mwc=home';
+
+					}
+				}else{
+					swal("Error", "No se puede ingresar, revise sus datos", "error");
+				}
+			})
+			.error(function(data) {
+				swal("Error", "No se puede ingresar, code: Ix000001", "error");
+			});
+
+	      } else {
+					swal("Error", "Debe ingresar sus datos o ya existe alguien logueado", "error");
+	      }
+}

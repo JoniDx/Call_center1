@@ -1,0 +1,190 @@
+function validarArchivoCo(obj, nombre){
+    var uploadFile = obj.files[0];
+    if (!window.FileReader) {
+     swal("Error", "El navegador no soporta la lectura de archivos", "error");
+        return;
+    }
+
+    if (!(/\.(jpg|png|jpeg)$/i).test(uploadFile.name)) {
+     swal("Error", "Porfavor, cargue solamente archivo .jpg .jpeg .png ", "error");
+        document.getElementById(nombre).value='';
+        document.getElementById(nombre).focus();
+    }
+    else {
+        var img = new Image();
+        if (uploadFile.size > 10000000)
+        {
+         swal("Error", "El peso del archivo debe ser menos a 10 MB", "error");
+            document.getElementById(nombre).value='';
+            document.getElementById(nombre).focus();
+        }
+        else {
+            // alert('Imagen correcta :)')
+        }
+        // };
+        img.src = URL.createObjectURL(uploadFile);
+    }
+}
+
+function AddTicket(){
+  var  Nombre,Email,Asunto,Telefono,Servicio,Descripcion,Id,tipoGuardar;
+
+  Nombre = document.getElementById('txtNombre').value;
+  Email = document.getElementById('txtEmail').value;
+  Asunto = document.getElementById('txtAsunto').value;
+  Telefono = document.getElementById('txtTelefono').value;
+  Servicio = document.getElementById('txtServicio').value;
+  Descripcion = document.getElementById('txtDescripcion').value;
+  Id = document.getElementById('id').value;
+
+
+  if (Id == '') {
+    swal("Error", "Porfavor Inicie Sesión", "error");
+    document.getElementById("txtNombre").focus();
+    return 0;
+  }
+  if (Nombre == '') {
+    swal("Error", "Porfavor Inicie Sesión", "error");
+    document.getElementById("txtNombre").focus();
+    return 0;
+  }
+  if (Email == '') {
+    swal("Error", "Porfavor Inicie Sesión", "error");
+    document.getElementById("txtEmail").focus();
+    return 0;
+  }
+  if (Asunto == '') {
+    swal("Error", "Porfavor inserte Asunto", "error");
+    document.getElementById("txtAsunto").focus();
+    return 0;
+  }
+  if (Telefono == '') {
+    swal("Error", "Porfavor Inicie Sesión", "error");
+    document.getElementById("txtTelefono").focus();
+    return 0;
+  }
+  if (Servicio == '') {
+    swal("Error", "Porfavor inserte un Servicio", "error");
+    document.getElementById("txtServicio").focus();
+    return 0;
+  }
+  if (Descripcion == '') {
+    swal("Error", "Porfavor inserte una Descripcion", "error");
+    document.getElementById("txtDescripcion").focus();
+    return 0;
+  }
+
+  // var Imagen = document.getElementById("txtImgT").value;
+  // if (Imagen==""){
+  //  swal("Error al guardar", "Debe seleccionar una Imagen", "error");
+  //         document.getElementById("txtImgT").focus();
+  //         return 0;
+  //     }
+
+  var tipoGuardar = "AgregarT";
+      swal({
+      title: "Sus datos son correctos ?",
+      type: "info",
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: "Cancelar",
+    },
+    function (isConfirm) {
+      if (isConfirm) {
+        var datos = 'txtNombre=' + Nombre + '&txtEmail='+ Email + '&txtAsunto=' + Asunto +'&txtTelefono='+ Telefono + '&txtServicio=' + Servicio + '&txtDescripcion=' + Descripcion + '&TipoGuardar=' + tipoGuardar ;
+       // alert(datos);
+        $.ajax({
+          type:"POST",
+          url:"view/ajax/insertar.php",
+          data:datos,
+          success:function(data){
+            // alert(data);
+          }
+        })
+
+        .done(function(data) {
+          if(data != 0){
+            swal("Enviado", "Su ticket asido enviado ", "success");
+            document.frmI.MovI.value='GuardarI';document.frmI.submit();
+
+          }else{
+            swal("Error", "No se pueden enviar sus datos", "error");
+
+          }
+        })
+        .error(function(data) {
+          swal("Error", "No se puede guardar, code: Ix000001", "error");
+        });
+      }
+    });
+}
+
+function AsignarTicket(){
+  var Prioridad, Nivel, Encargado,IdTicket,tipoGuardar;
+  IdTicket = document.getElementById('IdTicket').value;
+  Prioridad = document.getElementById('txtPrioridad').value;
+  Nivel = document.getElementById('txtNivel').value;
+  Encargado = "";
+
+  if (Encargado == '') {
+    Encargado = document.getElementById('txtAdmin').value;
+  }
+
+  if (Prioridad == '') {
+    swal("Error", "Porfavor Seleccione una Prioridad", "error");
+    document.getElementById("txtPrioridad").focus();
+    return 0;
+  }
+
+  if (Nivel == '') {
+    swal("Error", "Porfavor Seleccione un Nivel", "error");
+    document.getElementById("txtNivel").focus();
+    return 0;
+  }
+
+  if (Encargado == '') {
+    swal("Error", "Porfavor Seleccione un Encargado", "error");
+    document.getElementById("txtEncargado").focus();
+    return 0;
+  }
+
+  var tipoGuardar = "AsignarT";
+      swal({
+      title: "Sus datos son correctos ?",
+      type: "info",
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: "Cancelar",
+    },
+    function (isConfirm) {
+      if (isConfirm) {
+        var datos = 'txtIdTicket='+IdTicket+'&txtPrioridad=' + Prioridad + '&txtNivel=' + Nivel + '&txtEncargado='+ Encargado +'&TipoGuardar=' + tipoGuardar ;
+       // alert(datos);
+        $.ajax({
+          type:"POST",
+          url:"view/ajax/insertar.php",
+          data:datos,
+          success:function(data){
+            // alert(data);
+          }
+        })
+
+        .done(function(data) {
+          if(data != 0){
+            swal("Enviado", "Ticket Asignado ", "success");
+            document.frmI.MovI.value='GuardarI';document.frmI.submit();
+
+          }else{
+            swal("Error", "No se puede guardar intente otra vez", "error");
+
+          }
+        })
+        .error(function(data) {
+          swal("Error", "No se puede guardar, code: Ix000001", "error");
+        });
+      }
+    });
+
+}
